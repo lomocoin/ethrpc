@@ -75,7 +75,7 @@ func (ec *Client) BlockByHash(ctx context.Context, hash common.Hash) (*types.Blo
 	return ec.getBlock(ctx, "eth_getBlockByHash", hash, true)
 }
 
-// CurrentBlockNumber Returns the number of most recent block.
+// BlockNumber Returns the number of most recent block.
 func (ec *Client) BlockNumber(ctx context.Context) (uint64, error) {
 	var hex string
 	err := ec.c.CallContext(ctx, &hex, "eth_blockNumber")
