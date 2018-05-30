@@ -28,6 +28,8 @@ import (
 	"fmt"
 	"math/big"
 
+	"strconv"
+
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -71,6 +73,22 @@ func (ec *Client) Close() {
 // if you don't need all transactions or uncle headers.
 func (ec *Client) BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error) {
 	return ec.getBlock(ctx, "eth_getBlockByHash", hash, true)
+}
+
+// CurrentBlockNumber Returns the number of most recent block.
+func (ec *Client) BlockNumber(ctx context.Context) (uint64, error) {
+	var hex string
+	err := ec.c.CallContext(ctx, &hex, "eth_blockNumber")
+	if err != nil {
+		return 0, err
+	}
+
+	parsed, err := strconv.ParseUint(hex, 0, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return parsed, err
 }
 
 // BlockByNumber returns a block from the current canonical chain. If number is nil, the
